@@ -4,10 +4,15 @@ namespace RainYun\Endpoints\Pub;
 
 use Psr\Http\Client\ClientInterface as HttpClientInterface;
 use Psr\Http\Message\RequestFactoryInterface;
-use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\UriFactoryInterface;
-use RainYun\Options;
+use RainYun\Endpoints\Pub\Resources\Status;
 
+/**
+ * Pub namespace - provides access to public API resources.
+ *
+ * This class acts as a factory for accessing specific API resources
+ * under the /pub namespace.
+ */
 class Pub
 {
     private HttpClientInterface $httpClient;
@@ -15,6 +20,12 @@ class Pub
     private UriFactoryInterface $uriFactory;
     private string $baseUrl;
 
+    /**
+     * @param HttpClientInterface $httpClient PSR-18 HTTP client
+     * @param RequestFactoryInterface $requestFactory PSR-17 request factory
+     * @param UriFactoryInterface $uriFactory PSR-17 URI factory
+     * @param string $baseUrl Base API URL
+     */
     public function __construct(
         HttpClientInterface $httpClient,
         RequestFactoryInterface $requestFactory,
@@ -28,47 +39,22 @@ class Pub
     }
 
     /**
-     * GET request to public endpoints like `status`.
+     * Access the Status API resource.
      *
-     * @param string $path
-     * @param Options|null $options
-     * @return PubCollection
+     * Example:
+     * ```php
+     * $result = $client->pub()->status()->get($options);
+     * ```
+     *
+     * @return Status Status API resource
      */
-    public function get(string $path = 'status', ?Options $options = null): PubCollection
+    public function status(): Status
     {
-        $uri = $this->uriFactory->createUri($this->baseUrl);
-        $existingPath = rtrim($uri->getPath(), '/');
-        $newPath = ($existingPath === '' ? '' : $existingPath) . '/' . ltrim($path, '/');
-        $uri = $uri->withPath($newPath);
-
-        $query = [];
-        if ($options) {
-            $query['options'] = $options->toJson();
-        }
-        if (!empty($query)) {
-            $uri = $uri->withQuery(http_build_query($query));
-        }
-
-        $request = $this->requestFactory->createRequest('GET', $uri)
-            ->withHeader('Accept', 'application/json')
-            ->withHeader('User-Agent', 'rainyun-php-sdk/0.1');
-
-        $response = $this->httpClient->sendRequest($request);
-        return $this->decodeResponse($response);
-    }
-
-    private function decodeResponse(ResponseInterface $response): PubCollection
-    {
-        $body = (string) $response->getBody();
-        $contentType = $response->getHeaderLine('Content-Type');
-        if (stripos($contentType, 'json') !== false) {
-            $decoded = json_decode($body, true);
-            return new PubCollection(is_array($decoded) ? $decoded : ['value' => $decoded]);
-        }
-        return new PubCollection([
-            'raw' => $body,
-            'content_type' => $contentType,
-            'status' => $response->getStatusCode(),
-        ]);
+        return new Status(
+            $this->httpClient,
+            $this->requestFactory,
+            $this->uriFactory,
+            $this->baseUrl
+        );
     }
 }

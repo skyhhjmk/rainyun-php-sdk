@@ -2,7 +2,13 @@
 
 namespace RainYun;
 
-class Options
+/**
+ * Generic options class (deprecated).
+ *
+ * @deprecated Use endpoint-specific options classes instead (e.g., PubGetOptions).
+ *             This class will be removed in a future version.
+ */
+class Options implements OptionsInterface
 {
     private array $data = [
         'sort' => [],
