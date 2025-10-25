@@ -6,6 +6,7 @@ use Psr\Http\Client\ClientInterface as HttpClientInterface;
 use Psr\Http\Message\RequestFactoryInterface;
 use Psr\Http\Message\UriFactoryInterface;
 use RainYun\Endpoints\Pub\Pub;
+use RainYun\Endpoints\User\User;
 
 class Client
 {
@@ -13,21 +14,39 @@ class Client
     private HttpClientInterface $httpClient;
     private RequestFactoryInterface $requestFactory;
     private UriFactoryInterface $uriFactory;
+    private ?string $apiKey;
 
     public function __construct(
         HttpClientInterface $httpClient,
         RequestFactoryInterface $requestFactory,
         UriFactoryInterface $uriFactory,
-        string $baseUrl = 'https://api.v2.rainyun.com'
+        string $baseUrl = 'https://api.v2.rainyun.com',
+        ?string $apiKey = null
     ) {
         $this->httpClient = $httpClient;
         $this->requestFactory = $requestFactory;
         $this->uriFactory = $uriFactory;
         $this->baseUrl = rtrim($baseUrl, '/');
+        $this->apiKey = $apiKey;
     }
 
     public function pub(): Pub
     {
         return new Pub($this->httpClient, $this->requestFactory, $this->uriFactory, $this->baseUrl);
+    }
+
+    /**
+     * Access the User namespace.
+     *
+     * Example:
+     * ```php
+     * $result = $client->user()->info()->get();
+     * ```
+     *
+     * @return User User namespace
+     */
+    public function user(): User
+    {
+        return new User($this->httpClient, $this->requestFactory, $this->uriFactory, $this->baseUrl, $this->apiKey);
     }
 }

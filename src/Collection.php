@@ -67,6 +67,11 @@ class Collection implements IteratorAggregate, Countable
         return $this->unwrap($this->attributes);
     }
 
+    public function __toString()
+    {
+        return json_encode($this->toArray(), JSON_UNESCAPED_UNICODE);
+    }
+
     protected function unwrap($value)
     {
         if ($value instanceof self) {

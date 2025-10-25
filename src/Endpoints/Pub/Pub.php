@@ -5,6 +5,8 @@ namespace RainYun\Endpoints\Pub;
 use Psr\Http\Client\ClientInterface as HttpClientInterface;
 use Psr\Http\Message\RequestFactoryInterface;
 use Psr\Http\Message\UriFactoryInterface;
+use RainYun\Endpoints\Pub\Resources\AppConfig;
+use RainYun\Endpoints\Pub\Resources\News;
 use RainYun\Endpoints\Pub\Resources\Status;
 
 /**
@@ -51,6 +53,49 @@ class Pub
     public function status(): Status
     {
         return new Status(
+            $this->httpClient,
+            $this->requestFactory,
+            $this->uriFactory,
+            $this->baseUrl
+        );
+    }
+
+    /**
+     * Access the AppConfig API resource.
+     *
+     * Example:
+     * ```php
+     * $result = $client->pub()->appConfig()->get();
+     * ```
+     *
+     * @return AppConfig AppConfig API resource
+     */
+    public function appConfig(): AppConfig
+    {
+        return new AppConfig(
+            $this->httpClient,
+            $this->requestFactory,
+            $this->uriFactory,
+            $this->baseUrl
+        );
+    }
+
+    /**
+     * Access the News API resource.
+     *
+     * Example:
+     * ```php
+     * $result = $client->pub()->news()->get();
+     * foreach ($result->data as $item) {
+     *     echo $item->Title . "\n";
+     * }
+     * ```
+     *
+     * @return News News API resource
+     */
+    public function news(): News
+    {
+        return new News(
             $this->httpClient,
             $this->requestFactory,
             $this->uriFactory,
