@@ -34,9 +34,12 @@ desktop.ini
 *~
 *.bak
 
-phpunit.xml
+# Keep phpunit.xml but ignore phpunit.xml.dist if created
 coverage/
 build/
 docs/_build/
 phpdoc/
 /composer.lock
+
+# PHPUnit cache
+.phpunit.cache/

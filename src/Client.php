@@ -7,6 +7,7 @@ use Psr\Http\Message\RequestFactoryInterface;
 use Psr\Http\Message\UriFactoryInterface;
 use RainYun\Endpoints\Pub\Pub;
 use RainYun\Endpoints\User\User;
+use RainYun\Endpoints\Product\Product;
 
 class Client
 {
@@ -48,5 +49,20 @@ class Client
     public function user(): User
     {
         return new User($this->httpClient, $this->requestFactory, $this->uriFactory, $this->baseUrl, $this->apiKey);
+    }
+
+    /**
+     * Access the Product namespace.
+     *
+     * Example:
+     * ```php
+     * $result = $client->product()->rcs()->get();
+     * ```
+     *
+     * @return Product Product namespace
+     */
+    public function product(): Product
+    {
+        return new Product($this->httpClient, $this->requestFactory, $this->uriFactory, $this->baseUrl, $this->apiKey);
     }
 }

@@ -5,6 +5,7 @@ require __DIR__ . '/../vendor/autoload.php';
 use GuzzleHttp\Client as GuzzleClient;
 use GuzzleHttp\Psr7\HttpFactory;
 use RainYun\Client;
+use RainYun\Collection;
 use RainYun\Endpoints\Pub\PubGetOptions;
 
 $http = new GuzzleClient(['verify' => false]);
@@ -18,6 +19,6 @@ $options = PubGetOptions::make()
     ->perPage(20)
     ->filter('Product', 'rcs');
 
-$result = $client->pub()->status()->get($options);
+$result = $client->pub()->appConfig()->get();
 
-echo 'TotalRecords: ' . $result->count() . "\n";
+echo $result;

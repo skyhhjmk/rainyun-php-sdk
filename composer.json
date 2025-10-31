@@ -8,6 +8,11 @@
       "RainYun\\": "src/"
     }
   },
+  "autoload-dev": {
+    "psr-4": {
+      "RainYun\\Tests\\": "tests/"
+    }
+  },
   "authors": [
     {
       "name": "skyhhjmk",
@@ -24,6 +29,11 @@
   },
   "require-dev": {
     "guzzlehttp/guzzle": "^7.0 || ^7.5 || ^8.0",
-    "guzzlehttp/psr7": "^2.6"
+    "guzzlehttp/psr7": "^2.6",
+    "phpunit/phpunit": "^9.5 || ^10.0"
+  },
+  "scripts": {
+    "test": "phpunit",
+    "test-coverage": "phpunit --coverage-html coverage"
   }
 }
