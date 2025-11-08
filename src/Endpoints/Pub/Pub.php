@@ -8,6 +8,7 @@ use Psr\Http\Message\UriFactoryInterface;
 use RainYun\Endpoints\Pub\Resources\AppConfig;
 use RainYun\Endpoints\Pub\Resources\News;
 use RainYun\Endpoints\Pub\Resources\Status;
+use RainYun\Endpoints\Pub\Resources\ShortParams;
 
 /**
  * Pub namespace - provides access to public API resources.
@@ -96,6 +97,26 @@ class Pub
     public function news(): News
     {
         return new News(
+            $this->httpClient,
+            $this->requestFactory,
+            $this->uriFactory,
+            $this->baseUrl
+        );
+    }
+
+    /**
+     * Access the ShortParams API resource.
+     *
+     * Example:
+     * ```php
+     * $sp = $this->pub()->shortParams();
+     * $created = $sp->create(['key' => 'value']);
+     * $decoded = $sp->parse($created->data);
+     * ```
+     */
+    public function shortParams(): ShortParams
+    {
+        return new ShortParams(
             $this->httpClient,
             $this->requestFactory,
             $this->uriFactory,

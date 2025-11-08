@@ -74,8 +74,7 @@ abstract class AbstractResource
     protected function createGetRequest($uri, bool $requireAuth = false)
     {
         $request = $this->requestFactory->createRequest('GET', $uri)
-            ->withHeader('Accept', 'application/json')
-            ->withHeader('User-Agent', 'rainyun-php-sdk/0.1');
+            ->withHeader('Accept', 'application/json');
         
         if ($requireAuth && $this->apiKey !== null) {
             $request = $request->withHeader('x-api-key', $this->apiKey);

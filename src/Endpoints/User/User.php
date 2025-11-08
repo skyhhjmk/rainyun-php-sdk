@@ -6,6 +6,7 @@ use Psr\Http\Client\ClientInterface as HttpClientInterface;
 use Psr\Http\Message\RequestFactoryInterface;
 use Psr\Http\Message\UriFactoryInterface;
 use RainYun\Endpoints\User\Resources\UserInfo;
+use RainYun\Endpoints\User\Resources\UserSetting;
 
 /**
  * User namespace - provides access to user API resources.
@@ -55,6 +56,27 @@ class User
     public function info(): UserInfo
     {
         return new UserInfo(
+            $this->httpClient,
+            $this->requestFactory,
+            $this->uriFactory,
+            $this->baseUrl,
+            $this->apiKey
+        );
+    }
+
+    /**
+     * Access the UserSetting API resource.
+     *
+     * Example:
+     * ```php
+     * $result = $client->user()->setting()->update('name', 'New Name');
+     * ```
+     *
+     * @return UserSetting UserSetting API resource
+     */
+    public function setting(): UserSetting
+    {
+        return new UserSetting(
             $this->httpClient,
             $this->requestFactory,
             $this->uriFactory,
